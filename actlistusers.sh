@@ -32,7 +32,7 @@ cat > $TMPFILE <<EOT
 printf '=%.0s' {1..60}
 printf "\n"
 udsinfo lsuser -delim , | while IFS="," read -r -a auser ; do 
-auser=\`echo \${auser[8]} | sed "s/\"//g"\`
+auser=\`echo \${auser[7]} | sed "s/\"//g"\`
 printf "Username: %-34s \n" \$auser 
 done
 exit
