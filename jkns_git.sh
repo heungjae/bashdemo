@@ -1,8 +1,9 @@
 #!/bin/bash
 
-PROJECT=
-REPOSRC=git@github.com/mikechew/sampledb.git
-LOCALREPO=/jenkinscode
+PROJECT=gvydemo
+REPOSRC=git@github.com/mikechew/$PROJECT.git
+
+LOCALREPO=.
 LOCALREPO_DIR=$LOCALREPO/sampledb
 
 # git config --global user.name "Michael Chew"
