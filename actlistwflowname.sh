@@ -9,7 +9,13 @@
 [ ! -f ./actparms.conf ] && { echo "Usage: Missing config file ./actparms.conf "; exit 1; }
 . ./actparms.conf
 
-readonly TMPFILE="/tmp/$(basename -s .sh "$0").txt"
+# -s option is only supported in MacOS
+if [[ "$OSTYPE" == "darwin"* ]]; then
+readonly TMPFILE="/tmp/$(basename -s .sh "$0")-"$$".txt"
+else
+readonly TMPFILE="/tmp/$(basename "$0" .sh)-"$$".txt"	
+fi
+
 readonly numparms=1
 
 [ $# -ne $numparms ] && { echo "Usage: $0 sky-ip (10.61.5.187) "; echo "Purpose: $0 lists all the workflows associated with an application on the Actifio appliance"; exit 1; }
@@ -19,16 +25,21 @@ act_ip=$1
 cat > $TMPFILE <<EOT
 
 echo "-------------------------------------------------"
-udsinfo lsworkflow -nohdr -delim ^ | while IFS="^", read -r -a wflow ; do 
+udsinfo lsworkflow -nohdr -delim ^ | while IFS="^" read -r -a wflow ; do 
 echo " "
 echo "name: \${wflow[4]}"
 appname=\`udsinfo lsapplication -nohdr -filtervalue id=\${wflow[6]} -delim ^ | cut -d ^ -f11\`
 echo "  AppName: \$appname"
 echo "  status: \${wflow[10]}"
 done
-
 exit
 EOT
 
-# Executes the list of Actifio CLI commands in the $TMPFILE file
-run_act_cli_if_alive
+#
+## Executes the list of Actifio CLI commands in the $TMPFILE file
+#
+if [ -x "$(command -v nc)" ]; then
+run_act_cli_if_alive_using_nc
+else
+run_act_cli_if_alive_using_telnet
+fi
