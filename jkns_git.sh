@@ -1,4 +1,7 @@
-REPOSRC=git@10.65.5.202:michael.chew/sampledb.git
+#!/bin/bash
+
+PROJECT=
+REPOSRC=git@github.com/mikechew/sampledb.git
 LOCALREPO=/jenkinscode
 LOCALREPO_DIR=$LOCALREPO/sampledb
 
@@ -16,5 +19,3 @@ else
 fi
 
 cd $LOCALREPO_DIR
-make -f makefile
-./main.exe
