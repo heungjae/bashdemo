@@ -32,9 +32,8 @@ cat > $TMPFILE <<EOT
 printf '=%.0s' {1..60}
 printf "\n"
 udsinfo lsuser -delim , | while IFS="," read -r -a auser ; do 
-auser=\`echo \${auser[1]} | sed "s/\"//g"\`
-host_id=\`udsinfo lshost -nohdr -delim ^ -filtervalue hostname=\$auser | cut -d ^ -f1\`
-printf "Hostname: %-34s : HostID: %-8s\n" \$auser \$host_id
+auser=\`echo \${auser[8]} | sed "s/\"//g"\`
+printf "Username: %-34s \n" \$auser 
 done
 exit
 EOT
